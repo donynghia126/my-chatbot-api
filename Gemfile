@@ -33,10 +33,12 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 # Để gọi Gemini API (hoặc bất kỳ HTTP API nào khác)
 gem 'httparty' # Hoặc 'faraday' nếu "sếp" thích, cả hai đều "ngon"
-# Để quản lý API key và các biến môi trường một cách an toàn
+# Để quản lý API key và các biến môi trường một cách an toàn  
 gem 'dotenv-rails', groups: [:development, :test]
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
+
+gem 'pg' ,"~> 1.1"# PostgreSQL database adapter
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
