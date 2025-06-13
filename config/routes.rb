@@ -1,20 +1,25 @@
+# config/routes.rb
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      # Khi có POST request tới /api/v1/chat, sẽ gọi action 'create' trong ChatController
+      # --- Routes cũ ---
       post 'chat', to: 'chat#create'
-      
-      # "Sếp" cũng có thể đặt tên action là 'converse' hay gì đó "kêu" hơn nếu muốn
+      resources :users, only: [:create]
+      post 'login', to: 'authentication#login'
+
+      # === THÊM ROUTES MỚI CHO CONVERSATIONS ===
+      #
+      # GET /api/v1/conversations -> Lấy danh sách các cuộc hội thoại của user
+      # GET /api/v1/conversations/:id -> Lấy toàn bộ tin nhắn của 1 cuộc hội thoại
+      #
+      resources :conversations, only: [:index, :show, :update, :destroy] 
+        # === THÊM KHU VỰC ROUTE CHO ADMIN ===
+      namespace :admin do
+        # GET /api/v1/admin/users -> Lấy danh sách tất cả user (chỉ admin mới được gọi)
+        resources :users, only:  [:index, :update, :destroy]
+      end
+
     end
+    
   end
-
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
