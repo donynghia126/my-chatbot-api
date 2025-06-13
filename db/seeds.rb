@@ -1,9 +1,15 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# db/seeds.rb
+
+# --- Logic phong chức admin ---
+# Lấy email admin từ biến môi trường để an toàn,
+# nếu không có thì fallback về email của sếp
+admin_email = ENV.fetch('ADMIN_EMAIL', 'donynghia126@gmail.com')
+
+admin_user = User.find_by(email: admin_email)
+
+if admin_user
+  admin_user.update!(admin: true)
+  puts "SUCCESS: Granted admin rights to #{admin_user.email}"
+else
+  puts "WARNING: Admin user with email #{admin_email} not found. Please register this user first."
+end
