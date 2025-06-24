@@ -89,6 +89,9 @@ Rails.application.configure do
   # Giải pháp lâu dài là dùng dịch vụ như Amazon S3, Cloudinary...
   config.active_storage.service = :local
 
+  # Ra lệnh cho Active Storage dùng dịch vụ Cloudinary khi ở môi trường production
+  config.active_storage.service = :cloudinary
+
   # Khai báo "hộ khẩu thường trú" cho server trên production
   # Thay thế "ten-app-cua-sep.onrender.com" bằng URL thật của sếp trên Render
   config.action_mailer.default_url_options = { host: "https://my-chatbot-api-itwo.onrender.com" }

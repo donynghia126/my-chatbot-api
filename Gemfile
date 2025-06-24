@@ -41,6 +41,13 @@ gem "rack-cors"
 
 gem 'pg' ,"~> 1.1"# PostgreSQL database adapter
 
+# Gemfile
+
+# Dùng cho việc tích hợp với dịch vụ Cloudinary
+gem 'cloudinary'
+# Dùng cho Active Storage để có thể dùng Cloudinary làm service
+gem 'activestorage-cloudinary-service'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
