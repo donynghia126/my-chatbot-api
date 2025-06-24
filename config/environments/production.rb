@@ -83,4 +83,14 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+    # Cấu hình Active Storage để biết cách lưu trữ file trên production
+  # Ở đây ta dùng :local, có nghĩa là file sẽ được lưu ngay trên server của Render.
+  # LƯU Ý: Với gói Free, file này có thể bị mất sau khi deploy lại.
+  # Giải pháp lâu dài là dùng dịch vụ như Amazon S3, Cloudinary...
+  config.active_storage.service = :local
+
+  # Khai báo "hộ khẩu thường trú" cho server trên production
+  # Thay thế "ten-app-cua-sep.onrender.com" bằng URL thật của sếp trên Render
+  config.action_mailer.default_url_options = { host: "https://my-chatbot-api-itwo.onrender.com" }
+  Rails.application.routes.default_url_options = { host: "https://my-chatbot-api-itwo.onrender.com" }
 end
