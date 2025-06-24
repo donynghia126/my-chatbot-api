@@ -1,10 +1,12 @@
 # app/serializers/conversation_detail_serializer.rb
-class ConversationDetailSerializer < ActiveModel::Serializer
-  attributes :id, :title, :created_at
-  has_many :messages
+# Phiên bản cuối cùng, đính kèm đầy đủ thông tin cần thiết
 
-  # Định dạng cho các tin nhắn con
-  class MessageSerializer < ActiveModel::Serializer
-    attributes :id, :role, :content, :created_at
-  end
+class ConversationDetailSerializer < ActiveModel::Serializer
+  attributes :id, :title, :pinned, :user_id
+
+  # Đính kèm object user (chủ nhân cuộc hội thoại)
+  belongs_to :user
+  
+  # Đính kèm danh sách tin nhắn
+  has_many :messages
 end

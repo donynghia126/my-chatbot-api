@@ -14,4 +14,6 @@ class User < ApplicationRecord
   has_many :conversations, dependent: :destroy # Một User có nhiều Conversation
   # validates :phone_number, format: { with: /\A\d{10,11}\z/, message: "Invalid phone number" }, allow_blank: true # Uncomment if needed
   # validates :date_of_birth, presence: true # Uncomment if needed
+  # Khai báo rằng mỗi User có một file đính kèm tên là `avatar`
+  has_one_attached :avatar
 end
