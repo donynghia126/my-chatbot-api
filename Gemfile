@@ -39,7 +39,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-gem 'pg' ,"~> 1.1"# PostgreSQL database adapter
+gem 'pg' ,"~> 1.6"# PostgreSQL database adapter
 
 # Gemfile
 
