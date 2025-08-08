@@ -10,6 +10,10 @@ class ApplicationController < ActionController::API
     header = request.headers['Authorization']
     # Lấy token từ header, bỏ đi chữ "Bearer " ở đầu
     token = header.split(' ').last if header
+    unless token
+      render json: { errors: 'Token is missing' }, status: :unauthorized
+      return # Dừng lại ngay nếu không có token
+    end
     begin
       # Giải mã token để lấy payload (chứa user_id)
       decoded_token = JWT.decode(token, Rails.application.secret_key_base, true, algorithm: 'HS256')
