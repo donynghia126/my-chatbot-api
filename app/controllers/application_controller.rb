@@ -28,6 +28,13 @@ class ApplicationController < ActionController::API
     end
   end
 
+  # Health check endpoint - đặt trước private để có thể truy cập công khai
+  skip_before_action :verify_authenticity_token, only: [:health]
+  
+  def health
+    render json: { status: 'OK', timestamp: Time.now.utc }, status: :ok
+  end
+
   # <<-- SỬA LỖI: `private` được đặt ở đây, ngang cấp với các hàm -->>
   private
 
@@ -38,11 +45,5 @@ class ApplicationController < ActionController::API
     unless @current_user&.admin?
       render json: { error: 'Not authorized' }, status: :forbidden # 403 Forbidden
     end
-  end
-  
-  skip_before_action :verify_authenticity_token, only: [:health]
-
-  def health
-    render json: { status: 'OK', timestamp: Time.now.utc }, status: :ok
   end
 end
