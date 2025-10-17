@@ -39,4 +39,9 @@ class ApplicationController < ActionController::API
       render json: { error: 'Not authorized' }, status: :forbidden # 403 Forbidden
     end
   end
+  skip_before_action :verify_authenticity_token, only: [:health]
+
+  def health
+    render json: { status: 'OK', timestamp: Time.now.utc }, status: :ok
+  end
 end
