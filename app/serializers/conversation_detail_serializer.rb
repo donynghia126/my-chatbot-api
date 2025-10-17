@@ -6,7 +6,7 @@ class ConversationDetailSerializer < ActiveModel::Serializer
 
   # Đính kèm object user (chủ nhân cuộc hội thoại)
   belongs_to :user
-  
+
   # Đính kèm danh sách tin nhắn
   has_many :messages
 end

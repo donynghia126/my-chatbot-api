@@ -1,5 +1,5 @@
 # app/controllers/api/v1/chat_controller.rb
-require 'httparty'
+require "httparty"
 
 module Api
   module V1
@@ -37,30 +37,30 @@ module Api
         @conversation ||= @current_user.conversations.create(title: user_message_content.truncate(50))
 
         # === 3. Lưu Tin nhắn của Người dùng vào Database ===
-        @conversation.messages.create!(role: 'user', content: user_message_content)
+        @conversation.messages.create!(role: "user", content: user_message_content)
 
         # === 4. Chuẩn bị dữ liệu và Gọi Gemini API ===
         # Lấy toàn bộ lịch sử chat từ database để làm context cho Gemini
         history_for_api = @conversation.messages.order(created_at: :asc).map do |msg|
-          { role: msg.role, parts: [{ text: msg.content }] }
+          { role: msg.role, parts: [ { text: msg.content } ] }
         end
 
         # Xây dựng chỉ dẫn cho AI (vai trò gia sư và ngôn ngữ phản hồi)
         language_instruction = case params[:targetLanguage].to_s.downcase
-                                when 'ja' then "全ての返答は日本語で行ってください。"
-                                when 'en' then "Please ensure all your responses are in English."
-                                else "Hãy đảm bảo tất cả các câu trả lời của bạn đều bằng tiếng Việt." # Mặc định
-                                end
+        when "ja" then "全ての返答は日本語で行ってください。"
+        when "en" then "Please ensure all your responses are in English."
+        else "Hãy đảm bảo tất cả các câu trả lời của bạn đều bằng tiếng Việt." # Mặc định
+        end
         current_system_instruction = "#{DEFAULT_SYSTEM_INSTRUCTION}\n\n#{language_instruction}"
 
         # Chuẩn bị request body
         request_body = {
           contents: history_for_api, # Dùng lịch sử từ database
-          systemInstruction: { parts: [{ text: current_system_instruction }] }
+          systemInstruction: { parts: [ { text: current_system_instruction } ] }
         }.to_json
 
         headers = { "Content-Type" => "application/json" }
-        api_key = ENV['GEMINI_API_KEY']
+        api_key = ENV["GEMINI_API_KEY"]
         full_api_url = "#{GEMINI_API_ENDPOINT}?key=#{api_key}"
 
         # === 5. Xử lý Phản hồi và Lưu Tin nhắn của AI ===
@@ -71,10 +71,10 @@ module Api
             parsed_response = response.parsed_response
             # Lấy text an toàn từ phản hồi của AI
             ai_reply_text = parsed_response.dig("candidates", 0, "content", "parts", 0, "text") || "Xin lỗi, tôi chưa thể đưa ra câu trả lời lúc này."
-            
+
             # Lưu tin nhắn của AI vào database
-            @conversation.messages.create!(role: 'model', content: ai_reply_text)
-            
+            @conversation.messages.create!(role: "model", content: ai_reply_text)
+
             # Trả về câu trả lời của AI và conversation_id cho frontend
             render json: { reply: ai_reply_text, conversation_id: @conversation.id }, status: :ok
           else

@@ -11,7 +11,7 @@ module Api
           hmac_secret = Rails.application.secret_key_base
           exp = Time.now.to_i + 24 * 3600 # Hết hạn sau 24 giờ
           payload = { user_id: user.id, exp: exp }
-          token = JWT.encode(payload, hmac_secret, 'HS256')
+          token = JWT.encode(payload, hmac_secret, "HS256")
 
           # <<-- NÂNG CẤP Ở ĐÂY -->>
           # Dùng UserSerializer để tạo ra một object user nhất quán,
@@ -22,7 +22,7 @@ module Api
           }, status: :ok
         else
           # Email không tồn tại hoặc mật khẩu sai
-          render json: { error: 'errors.invalidCredentials' }, status: :unauthorized
+          render json: { error: "errors.invalidCredentials" }, status: :unauthorized
         end
       rescue StandardError => e
         Rails.logger.error "Login error: #{e.message}"

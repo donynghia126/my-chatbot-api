@@ -3,7 +3,7 @@ namespace :users do
   desc "Grant admin privileges to a user by email"
   task grant_admin: :environment do
     # Lấy email từ biến môi trường mà mình sẽ đặt trên Render
-    email = ENV['EMAIL']
+    email = ENV["EMAIL"]
 
     unless email
       puts "Lỗi: Vui lòng cung cấp email bằng cách chạy: rake users:grant_admin EMAIL=your_email@example.com"

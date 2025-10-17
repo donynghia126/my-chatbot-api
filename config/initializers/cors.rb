@@ -3,15 +3,15 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # Lấy danh sách các origin được phép từ biến môi trường.
     # Nếu không có, mặc định sẽ cho phép các địa chỉ phổ biến khi dev (localhost và 127.0.0.1)
-    allowed_origins = ENV.fetch('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
+    allowed_origins = ENV.fetch("CORS_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
 
     # Tách chuỗi thành mảng các origin và loại bỏ khoảng trắng thừa
-    origins allowed_origins.split(',').map { |origin| origin.strip }
+    origins allowed_origins.split(",").map { |origin| origin.strip }
 
-    resource '*',
+    resource "*",
       headers: :any,
       # Quan trọng: Phải cho phép tất cả các method, bao gồm cả OPTIONS (preflight request)
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
   end
 end
 

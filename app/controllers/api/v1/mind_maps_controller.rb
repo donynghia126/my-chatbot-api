@@ -8,7 +8,7 @@ class Api::V1::MindMapsController < ApplicationController
 
   def create
     # === KIỂM TRA ĐẦU VÀO ===
-    api_key = ENV['GEMINI_API_KEY']
+    api_key = ENV["GEMINI_API_KEY"]
     unless api_key.present?
       render json: { error: "GEMINI_API_KEY is not configured on the server." }, status: :internal_server_error
       return
@@ -16,7 +16,7 @@ class Api::V1::MindMapsController < ApplicationController
 
     topic = params[:topic]
     if topic.blank?
-      render json: { error: 'Topic is required' }, status: :bad_request
+      render json: { error: "Topic is required" }, status: :bad_request
       return
     end
 
@@ -33,8 +33,8 @@ class Api::V1::MindMapsController < ApplicationController
     begin
       response = HTTParty.post(
         "#{GEMINI_API_URL}?key=#{api_key}",
-        headers: { 'Content-Type' => 'application/json' },
-        body: { contents: [{ parts: [{ text: prompt }] }] }.to_json,
+        headers: { "Content-Type" => "application/json" },
+        body: { contents: [ { parts: [ { text: prompt } ] } ] }.to_json,
         timeout: 30 # Thêm timeout để tránh chờ quá lâu
       )
 
@@ -44,9 +44,9 @@ class Api::V1::MindMapsController < ApplicationController
         render json: { error: "Failed to generate Mind Map from Gemini API", details: response.parsed_response }, status: :service_unavailable
         return
       end
-      
+
       json_string = response.dig("candidates", 0, "content", "parts", 0, "text")
-      
+
       unless json_string
         Rails.logger.error "Gemini API Response format unexpected: #{response.body}"
         render json: { error: "Unexpected response format from AI. Could not find text part." }, status: :internal_server_error

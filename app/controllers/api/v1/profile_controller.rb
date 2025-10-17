@@ -15,7 +15,7 @@ module Api
         if profile_params[:password].present?
           # Kiểm tra mật khẩu cũ
           unless @current_user.authenticate(params[:user][:current_password])
-            return render json: { errors: ["errors.invalidCurrentPassword"] }, status: :unprocessable_entity
+            return render json: { errors: [ "errors.invalidCurrentPassword" ] }, status: :unprocessable_entity
           end
         end
 
@@ -23,9 +23,9 @@ module Api
         # Dùng `.except(:current_password)` để loại bỏ key không cần thiết
         # trước khi đưa vào lệnh update.
         if @current_user.update(profile_params.except(:current_password))
-          render json: { 
+          render json: {
             message: "Profile updated successfully.",
-            user: UserSerializer.new(@current_user).as_json 
+            user: UserSerializer.new(@current_user).as_json
           }, status: :ok
         else
           render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
@@ -36,9 +36,9 @@ module Api
 
       def profile_params
         params.require(:user).permit(
-          :first_name, 
-          :last_name, 
-          :password, 
+          :first_name,
+          :last_name,
+          :password,
           :password_confirmation,
           :current_password,
           :avatar

@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "49e92d162bb087f06087f354df0db98343000e4c33233a1c576be6f997ab6a5d",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/api/v1/admin/users_controller.rb",
+      "line": 48,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:admin)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Api::V1::Admin::UsersController",
+        "method": "user_params"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": "This is a protected admin-only endpoint. Only admins can access this endpoint and modify the admin flag of other users. This is the intended behavior."
+    }
+  ],
+  "updated": "2025-10-17 15:25:00 +0900",
+  "brakeman_version": "7.0.2"
+}

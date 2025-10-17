@@ -6,11 +6,11 @@ class Api::V1::SocraticQuestionsController < ApplicationController
   def create
     topic = params[:topic]
     if topic.blank?
-      render json: { error: 'Topic is required' }, status: :bad_request
+      render json: { error: "Topic is required" }, status: :bad_request
       return
     end
 
-    api_key = ENV['GEMINI_API_KEY']
+    api_key = ENV["GEMINI_API_KEY"]
     unless api_key.present?
       render json: { error: "GEMINI_API_KEY is not configured." }, status: :internal_server_error
       return
@@ -28,8 +28,8 @@ class Api::V1::SocraticQuestionsController < ApplicationController
     begin
       response = HTTParty.post(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=#{api_key}",
-        headers: { 'Content-Type' => 'application/json' },
-        body: { contents: [{ parts: [{ text: prompt }] }] }.to_json,
+        headers: { "Content-Type" => "application/json" },
+        body: { contents: [ { parts: [ { text: prompt } ] } ] }.to_json,
         timeout: 20
       )
 

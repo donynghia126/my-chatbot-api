@@ -7,19 +7,19 @@ class ApplicationController < ActionController::API
   # Phương thức này sẽ được các controller con (như ChatController, Admin::UsersController)
   # gọi thông qua `before_action` để kiểm tra và xác thực người dùng.
   def authenticate_request
-    header = request.headers['Authorization']
+    header = request.headers["Authorization"]
     # Lấy token từ header, bỏ đi chữ "Bearer " ở đầu
-    token = header.split(' ').last if header
+    token = header.split(" ").last if header
     unless token
-      render json: { errors: 'Token is missing' }, status: :unauthorized
+      render json: { errors: "Token is missing" }, status: :unauthorized
       return # Dừng lại ngay nếu không có token
     end
     begin
       # Giải mã token để lấy payload (chứa user_id)
-      decoded_token = JWT.decode(token, Rails.application.secret_key_base, true, algorithm: 'HS256')
+      decoded_token = JWT.decode(token, Rails.application.secret_key_base, true, algorithm: "HS256")
       # Tìm user dựa trên user_id trong token và gán vào biến instance @current_user
       # để các controller con có thể sử dụng
-      @current_user = User.find(decoded_token[0]['user_id'])
+      @current_user = User.find(decoded_token[0]["user_id"])
     rescue ActiveRecord::RecordNotFound => e
       render json: { errors: e.message }, status: :unauthorized
     rescue JWT::DecodeError => e
@@ -29,10 +29,10 @@ class ApplicationController < ActionController::API
   end
 
   # Health check endpoint - đặt trước private để có thể truy cập công khai
-  skip_before_action :verify_authenticity_token, only: [:health]
-  
+  skip_before_action :verify_authenticity_token, only: [ :health ]
+
   def health
-    render json: { status: 'OK', timestamp: Time.now.utc }, status: :ok
+    render json: { status: "OK", timestamp: Time.now.utc }, status: :ok
   end
 
   # <<-- SỬA LỖI: `private` được đặt ở đây, ngang cấp với các hàm -->>
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::API
     # Dùng `unless` để code gọn hơn
     # Nếu @current_user không tồn tại hoặc không phải là admin, thì báo lỗi
     unless @current_user&.admin?
-      render json: { error: 'Not authorized' }, status: :forbidden # 403 Forbidden
+      render json: { error: "Not authorized" }, status: :forbidden # 403 Forbidden
     end
   end
 end

@@ -83,7 +83,7 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-    # Cấu hình Active Storage để biết cách lưu trữ file trên production
+  # Cấu hình Active Storage để biết cách lưu trữ file trên production
   # Ở đây ta dùng :local, có nghĩa là file sẽ được lưu ngay trên server của Render.
   # LƯU Ý: Với gói Free, file này có thể bị mất sau khi deploy lại.
   # Giải pháp lâu dài là dùng dịch vụ như Amazon S3, Cloudinary...
