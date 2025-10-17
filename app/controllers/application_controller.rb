@@ -29,8 +29,6 @@ class ApplicationController < ActionController::API
   end
 
   # Health check endpoint - đặt trước private để có thể truy cập công khai
-  skip_before_action :verify_authenticity_token, only: [ :health ]
-
   def health
     render json: { status: "OK", timestamp: Time.now.utc }, status: :ok
   end
